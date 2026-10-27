@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Home - PixelForge Nexus{% endblock %}
+{% block content %}
+<div class="text-center mt-12">
+  <h1 class="text-3xl font-bold text-gray-800">Welcome to PixelForge Nexus!</h1>
+  <p class="mt-2 text-lg text-gray-600">
+    Your secure project management portal.
+  </p>
+  {% if not user %}
+  <a
+    href="/login"
+    class="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition">
+    Sign In
+  </a>
+  {% endif %}
+</div>
+
+{% endblock %}

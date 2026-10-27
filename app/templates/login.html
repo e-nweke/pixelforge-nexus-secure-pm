@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}Login | PixelForge Nexus{% endblock%}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 shadow-md rounded-md mt-10">
+  <h2 class="text-2xl font-semibold mb-6 text-center text-blue-600">
+    Sign In to PixelForge Nexus
+  </h2>
+
+  {% if error %}
+  <p class="text-red-600 text-sm mb-4">{{ error }}</p>
+  {% endif %}
+
+ <form action="/login" method="post" class="space-y-4">
+  <div>
+    <label for="username" class="block text-sm font-medium text-gray-700">
+      Username
+    </label>
+    <input
+      type="text"
+      name="username"
+      id="username"
+      required
+      class="w-full border border-gray-300 rounded px-3 py-2"
+    />
+  </div>
+
+  <div>
+    <label for="password" class="block text-sm font-medium text-gray-700">
+      Password
+    </label>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      required
+      class="w-full border border-gray-300 rounded px-3 py-2"
+    />
+  </div>
+
+  <div>
+    <label for="mfa_token" class="block text-sm font-medium text-gray-700">
+      MFA Code (if enabled)
+    </label>
+    <input
+      type="text"
+      name="mfa_token"
+      id="mfa_token"
+      class="w-full border border-gray-300 rounded px-3 py-2"
+      placeholder="123456"
+    />
+  </div>
+
+  <button
+    type="submit"
+    class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+  >
+    Login
+  </button>
+</form>
+</div>
+{% endblock %}

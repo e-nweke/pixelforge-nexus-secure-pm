@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}Dashboard - PixelForge Nexus{%
+endblock %} {% block content %}
+<div class="max-w-6xl mx-auto px-4 py-6">
+  <h1 class="text-3xl font-bold text-center mb-8">Dashboard</h1>
+
+  {% if user.role.value == 'Admin' %}
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">All Projects</h2>
+    <div class="space-x-2">
+      <a
+        href="/projects/create"
+        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded shadow"
+        >+ Create New Project</a
+      >
+      <a
+        href="/users"
+        class="bg-gray-700 hover:bg-gray-800 text-white text-sm font-medium py-2 px-4 rounded shadow"
+        >Manage Users</a
+      >
+    </div>
+  </div>
+  {% elif user.role.value == 'ProjectLead' %}
+  <h2 class="text-xl font-semibold mb-6">Projects You Lead</h2>
+  {% elif user.role.value == 'Developer' %}
+  <h2 class="text-xl font-semibold mb-6">Your Assigned Projects</h2>
+  {% endif %} {% if projects %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for project in projects %}
+    <div class="bg-white shadow rounded-lg p-4 border">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="text-lg font-bold text-blue-700 hover:underline">
+            <a href="/projects/{{ project.id }}">{{ project.name }}</a>
+          </h3>
+          <p class="text-sm text-gray-600 mb-1">{{ project.description }}</p>
+          <p class="text-sm text-gray-500">Deadline: {{ project.deadline }}</p>
+          <p class="text-sm mt-1">
+            Status:
+            <span
+              class="font-semibold {{ 'text-green-600' if project.completed else 'text-yellow-600' }}"
+              >{{ 'Completed' if project.completed else 'Active' }}</span
+            >
+          </p>
+        </div>
+        {% if user.role.value == 'Admin' and not project.completed %}
+        <form action="/projects/{{ project.id }}/complete" method="post">
+          <button
+            type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 rounded">
+            Mark Complete
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-500 text-center mt-8">No projects found.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Project Details - PixelForge Nexus{%
+endblock %} {% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4">{{ project.name }}</h1>
+
+  <div class="mb-6">
+    <p>
+      <span class="font-semibold">Description:</span> {{ project.description }}
+    </p>
+    <p><span class="font-semibold">Deadline:</span> {{ project.deadline }}</p>
+    <p>
+      <span class="font-semibold">Status:</span> {{ 'Completed' if
+      project.completed else 'Active' }}
+    </p>
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold mb-2">Assigned Team Members</h2>
+    {% if team_members %}
+    <ul class="list-disc list-inside">
+      {% for member in team_members %}
+      <li>{{ member.username }} ({{ member.role.value }})</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500">No team members assigned yet.</p>
+    {% endif %} {% if user.role.value == 'ProjectLead' and user.id ==
+    project.lead_id %}
+    <form method="post" action="/projects/{{ project.id }}/assign" class="mt-4">
+      <label for="developer_id" class="block mb-1">Assign Developer</label>
+      <select
+        name="developer_id"
+        id="developer_id"
+        class="border rounded px-3 py-2">
+        {% for dev in developers %}
+        <option value="{{ dev.id }}">{{ dev.username }}</option>
+        {% endfor %}
+      </select>
+      <button
+        type="submit"
+        class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+        Assign
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold mb-2">Project Documents</h2>
+    {% if documents %}
+    <ul class="space-y-2">
+      {% for doc in documents %}
+      <li class="border p-3 rounded">
+        <a
+          href="/projects/docs/{{ doc.id }}/download"
+          class="text-blue-600 underline">
+          {{ doc.original_name }}
+        </a>
+        <span class="text-sm text-gray-500 ml-2">(v{{ doc.version }})</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500">No documents uploaded.</p>
+    {% endif %} {% if user.role.value in ['Admin', 'ProjectLead'] and
+    (user.role.value == 'Admin' or user.id == project.lead_id) %}
+    <form
+      method="post"
+      action="/projects/{{ project.id }}/upload"
+      enctype="multipart/form-data"
+      class="mt-4">
+      <label class="block mb-1" for="document">Upload Document</label>
+      <input
+        type="file"
+        name="document"
+        id="document"
+        required
+        class="border px-3 py-2 rounded" />
+      <button
+        type="submit"
+        class="ml-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+        Upload
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

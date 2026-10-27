@@ -1,0 +1,13 @@
+
+<header class="bg-white shadow p-4 flex justify-between items-center">
+  <a href="/" class="text-2xl font-bold text-blue-600">PixelForge Nexus</a>
+  <nav class="space-x-4">
+    {% if user %}
+    <a href="/dashboard" class="text-blue-500 hover:underline">Dashboard</a>
+    <a href="/account" class="text-blue-500 hover:underline">Account</a>
+    <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+    {% else %}
+    <a href="/login" class="text-blue-500 hover:underline">Login</a>
+    {% endif %}
+  </nav>
+</header>

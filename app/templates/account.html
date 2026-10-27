@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Account - PixelForge Nexus{% endblock
+%} {% block content %}
+<div class="max-w-xl mx-auto py-8">
+  <h2 class="text-2xl font-bold mb-4">Account Settings</h2>
+
+  {% if success %}
+  <div class="bg-green-100 text-green-800 p-2 rounded mb-4">{{ success }}</div>
+  {% endif %}
+
+  <form method="post" class="space-y-4">
+    <div>
+      <label for="new_password" class="block text-sm font-medium text-gray-700"
+        >New Password</label
+      >
+      <input
+        type="password"
+        name="new_password"
+        id="new_password"
+        required
+        class="w-full border border-gray-300 rounded px-3 py-2" />
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+      Update Password
+    </button>
+  </form>
+
+  <hr class="my-6" />
+
+<div>
+  <h3 class="text-lg font-semibold mb-2">Multi-Factor Authentication (MFA)</h3>
+
+  {% if not user.mfa_enabled %}
+    <p class="text-sm text-red-600 mb-4">MFA is not enabled for your account.</p>
+    <form method="post" action="/account/enable-mfa">
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+        Enable MFA
+      </button>
+    </form>
+  {% else %}
+    <p class="text-sm text-gray-600 mb-2">MFA is enabled for your account.</p>
+    {% if user.mfa_secret %}
+      <p class="text-sm text-gray-600">Setup Key: <code>{{ user.mfa_secret }}</code></p>
+    {% endif %}
+  {% endif %}
+</div>
+</div>
+{% endblock %}
