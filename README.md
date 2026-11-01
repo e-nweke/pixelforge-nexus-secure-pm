@@ -2,7 +2,7 @@
 
 A role-based project management web app I built with FastAPI, designed from the ground up around secure development practices. I made this for the Secure Software Design & Development module.
 
-> This is a university prototype for local use, not a production system. I've listed the known limitations honestly below rather than hiding them.
+> This is a university prototype for local use, not a production system. I've listed the known limitations as well.
 
 ## Features
 
